@@ -32,4 +32,5 @@ git clone https://github.com/alice-0-kim/flutter-app.git
   2. Select cloned repository to open
   3. Tools > AVD Manager > Create Virtual Device... to create a new virtual device
   4. Click `No device` dropdown to select the newly created virtual device
+  ![](20190528093110.png)
   5. Run `main.dart` or press `Shift` + `F10`
