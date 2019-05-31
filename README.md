@@ -34,3 +34,7 @@ git clone https://github.com/alice-0-kim/flutter-app.git
   4. Click `No device` dropdown to select the newly created virtual device
   ![](20190528093110.png)
   5. Run `main.dart` or press `Shift` + `F10`
+
+## Helpful Tutorials
+- [How to build an app from scratch](https://medium.com/aviabird/flutter-tutorial-how-to-build-an-app-from-scratch-b88d4e0e10d7)
+- [Just enough Dart for Flutter](https://medium.com/thetechnocafe/just-enough-dart-for-flutter-e907b80f4ff4)
