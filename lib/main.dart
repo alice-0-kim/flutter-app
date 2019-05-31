@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+//      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: new Button(),
     );
   }
 }
@@ -108,4 +109,74 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+class Button extends StatefulWidget {
+  @override
+  ButtonState createState() => new ButtonState();
+}
+
+class ButtonState extends State<Button> {
+  int counter = 0;
+
+  void onPressed() {
+    setState(() {
+      counter = (counter + 1) % 3;
+    });
+  }
+
+  void choiceAction(Constant choice) {
+    print(choice.toString().substring(9));
+  }
+
+  List<Constant> choices = <Constant> [Constant.Logout, Constant.Settings, Constant.Sound];
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("Math App"),
+        backgroundColor: Colors.blue,
+        actions: <Widget>[
+          PopupMenuButton<Constant>(
+            onSelected: choiceAction,
+            itemBuilder: (BuildContext context){
+              return choices.map((Constant choice){
+                return PopupMenuItem<Constant>(
+                  value: choice,
+                  child: Text(choice.toString().split('.').last),
+                );
+              }).toList();
+            },
+          )
+        ],
+      ),
+      body: new Container(
+        child: new Center(
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new Text("Title", style: new TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold)),
+              new Padding(padding: new EdgeInsets.only(bottom: 50.0)),
+              new RaisedButton(
+                  child: new Text("Formula", style: new TextStyle(color: Colors.white, fontSize: 20.0)),
+                  color: Colors.blueAccent,
+                  onPressed: onPressed
+              ),
+              new Padding(padding: new EdgeInsets.all(10.0)),
+              new RaisedButton(
+                  child: new Text("Problem", style: new TextStyle(color: Colors.white, fontSize: 20.0)),
+                  color: Colors.blueAccent,
+                  onPressed: onPressed
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+enum Constant {
+  Settings, Sound, Logout
 }
