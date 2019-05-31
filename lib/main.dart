@@ -26,6 +26,44 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class FormulaRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Formula Route"),
+      ),
+      body: Center(
+        child: RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+
+class ProblemRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Ploblem Route"),
+      ),
+      body: Center(
+        child: RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -119,12 +157,6 @@ class Button extends StatefulWidget {
 class ButtonState extends State<Button> {
   int counter = 0;
 
-  void onPressed() {
-    setState(() {
-      counter = (counter + 1) % 3;
-    });
-  }
-
   void choiceAction(Constant choice) {
     print(choice.toString().substring(9));
   }
@@ -161,13 +193,23 @@ class ButtonState extends State<Button> {
               new RaisedButton(
                   child: new Text("Formula", style: new TextStyle(color: Colors.white, fontSize: 20.0)),
                   color: Colors.blueAccent,
-                  onPressed: onPressed
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FormulaRoute()),
+                    );
+                  }
               ),
               new Padding(padding: new EdgeInsets.all(10.0)),
               new RaisedButton(
                   child: new Text("Problem", style: new TextStyle(color: Colors.white, fontSize: 20.0)),
                   color: Colors.blueAccent,
-                  onPressed: onPressed
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProblemRoute()),
+                    );
+                  }
               )
             ],
           ),
