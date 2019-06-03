@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tags/selectable_tags.dart';
 
 void main() => runApp(MyApp());
+
+int _id = 0;
 
 class MyApp extends StatelessWidget {
   @override
@@ -11,7 +14,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
-//      home: Button(),
     );
   }
 }
@@ -59,6 +61,10 @@ class ProblemRoute extends StatelessWidget {
   }
 }
 
+enum Constant {
+  Settings, Sound, Logout
+}
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -68,44 +74,88 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-
-  void _incrementCounter() {
-//    setState(() {
-//      _counter++;
-//    });
-    print("Floating button pressed");
+class Item {
+  int id;
+  String title;
+  bool active;
+  Item(this.title) {
+    this.id = _id++;
+    this.active = false;
   }
-
-//  int counter = 0;
+}
+class _MyHomePageState extends State<MyHomePage> {
   List<Constant> choices = [Constant.Logout, Constant.Settings, Constant.Sound];
-  List<String>   items   = [];
+  List<Item>     items   = [];
+  List<Tag>      tags    = [];
+
   TextEditingController controller = TextEditingController();
   String filter;
 
-  InkWell _inkWell(int index) {
+  InkWell _inkWell(int index)
+  {
     return InkWell(onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute())); }, child: _card(index));
   }
 
-  Card _card(int index) {
-    return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(items[index])));
+  Card _card(int index)
+  {
+    return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(items[index].title)));
   }
 
-  bool _contains(int index) {
-    return filter == null || filter == "" || items[index].toLowerCase().contains(filter.toLowerCase());
+  bool _contains(int index)
+  {
+    return filter == null || filter == "" || items[index].title.toLowerCase().contains(filter.toLowerCase());
+  }
+
+  List<PopupMenuEntry> _popupMenuBuilder (Tag tag)
+  {
+    return <PopupMenuEntry>[
+      PopupMenuItem(
+        child: Text(tag.title, style: TextStyle( color: Colors.blueGrey ) ),
+        enabled: false,
+      ),
+      PopupMenuDivider(),
+      PopupMenuItem(
+        value: 1,
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.content_copy),
+            Text("Copy text"),
+          ],
+        ),
+      ),
+    ];
+  }
+
+  void _getActiveTags()
+  {
+    tags.where((tag) => tag.active).forEach((tag) => print(tag.title));
+  }
+
+  void _getDisableTags()
+  {
+    tags.where((tag) => !tag.active).forEach((tag) => print(tag.title));
   }
 
   void choiceAction(Constant choice) {
     print(choice.toString().substring(9));
   }
 
-
   @override
   initState() {
-    items.add("Apple");
-    items.add("Bananas");
-    items.add("Milk");
-    items.add("Water");
+    super.initState();
+    items.add(Item("Apple"));
+    items.add(Item("Bananas"));
+    items.add(Item("Milk"));
+    items.add(Item("Water"));
+    items.forEach((item) =>
+        tags.add(
+            Tag(
+              id: item.id,
+              title: item.title,
+              active: item.active,
+            )
+        )
+    );
     controller.addListener(() {
       setState(() {
         filter = controller.text;
@@ -169,15 +219,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),*/
     );
   }
-}
-
-enum Constant {
-  Settings, Sound, Logout
 }
