@@ -135,11 +135,12 @@ class _MyHomePageState extends State<MyHomePage> {
           // to see the wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Text("Title", style: new TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold)),
+//            new Text("Title", style: new TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold)),
             new Expanded(
               child: new TextField(
                 decoration: new InputDecoration(
-                    labelText: "Search something"
+                  labelText: "Search something",
+                  prefixIcon: Icon(Icons.search),
                 ),
                 controller: controller,
               ),
