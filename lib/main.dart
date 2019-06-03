@@ -78,16 +78,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 //  int counter = 0;
+  List<Constant> choices = [Constant.Logout, Constant.Settings, Constant.Sound];
+  List<String>   items   = [];
+  TextEditingController controller = TextEditingController();
+  String filter;
+
+  Card _card(int index) {
+    return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(items[index])));
+  }
+
+  bool _contains(int index) {
+    return filter == null || filter == "" || items[index].toLowerCase().contains(filter.toLowerCase());
+  }
 
   void choiceAction(Constant choice) {
     print(choice.toString().substring(9));
   }
 
-  List<Constant> choices = <Constant> [Constant.Logout, Constant.Settings, Constant.Sound];
-
-  List<String> items = <String> [];
-  TextEditingController controller = TextEditingController();
-  String filter;
 
   @override
   initState() {
@@ -145,13 +152,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: ListView.builder(
                   itemCount: items.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return filter == null || filter == "" ? Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(items[index])))
-                        : items[index].toLowerCase().contains(filter.toLowerCase()) ? Card(child: Text(items[index]))
-                        : Container();
+                    return _contains(index) ? _card(index) : Container();
                   },
+                  physics: BouncingScrollPhysics(),
+                  padding: EdgeInsets.all(0.0),
                 ),
+                flex: 4,
               ),
-              Text("Made with ♥️ by Team")
+              Text("Made with ♥️ by Team"),
+              Padding(padding: EdgeInsets.only(bottom: 10.0)),
             ],
           ),
         ),
