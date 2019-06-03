@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tags/selectable_tags.dart';
+import 'dart:math';
 
 void main() => runApp(MyApp());
 
@@ -80,7 +82,7 @@ class Item {
   bool active;
   Item(this.title) {
     this.id = _id++;
-    this.active = false;
+    this.active = true;
   }
 }
 class _MyHomePageState extends State<MyHomePage> {
@@ -90,10 +92,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   TextEditingController controller = TextEditingController();
   String filter;
-  double _width = 50;
-  double _height = 50;
+//  double _width = 50;
+  double _height = 0;
   Color _color = Colors.green;
-  BorderRadiusGeometry _borderRadius = BorderRadius.circular(8);
+//  BorderRadiusGeometry _borderRadius = BorderRadius.circular(8);
 
   InkWell _inkWell(int index)
   {
@@ -102,19 +104,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Card _card(int index)
   {
-    return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(items[index].toString())));
+    return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(items[index].title)));
   }
 
   bool _contains(int index)
   {
-    return filter == null || filter == "" || items[index].toString().toLowerCase().contains(filter.toLowerCase());
+    return filter == null || filter == "" || items[index].title.toLowerCase().contains(filter.toLowerCase());
   }
 
-  List<PopupMenuEntry> _popupMenuBuilder (Tag tag)
+  List<PopupMenuEntry> _popupMenuBuilder(Tag tag)
   {
     return <PopupMenuEntry>[
       PopupMenuItem(
-        child: Text(tag.title, style: TextStyle( color: Colors.blueGrey ) ),
+        child: Text(tag.title, style: TextStyle(color: Colors.blue)),
         enabled: false,
       ),
       PopupMenuDivider(),
@@ -182,7 +184,7 @@ class _MyHomePageState extends State<MyHomePage> {
           PopupMenuButton<Constant>(
             onSelected: choiceAction,
             itemBuilder: (BuildContext context){
-              return choices.map((Constant choice){
+              return choices.map((Constant choice) {
                 return PopupMenuItem<Constant>(
                   value: choice,
                   child: Text(choice.toString().split('.').last),
@@ -197,20 +199,38 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-//              Expanded(
-//                child: AnimatedContainer(
-//                  width: _width,
-//                  height: _height,
-//                  decoration: BoxDecoration(
-//                    color: _color,
-//                    borderRadius: _borderRadius,
-//                  ),
-//                  // Define how long the animation should take.
-//                  duration: Duration(seconds: 1),
-//                  // Provide an optional curve to make the animation feel smoother.
-//                  curve: Curves.fastOutSlowIn,
-//                )
-//              ),
+              Expanded(
+                child: AnimatedContainer(
+                  width: MediaQuery.of(context).size.width,
+                  height: _height,
+                  decoration: BoxDecoration(
+                    color: _color,
+//                  borderRadius: _borderRadius,
+                  ),
+                  // Define how long the animation should take.
+                  duration: Duration(seconds: 1),
+                  // Provide an optional curve to make the animation feel smoother.
+                  curve: Curves.fastOutSlowIn,
+                  child: SelectableTags(
+                    tags: tags,
+                    columns: 3, // default 4
+                    symmetry: true, // default false
+                    popupMenuBuilder: _popupMenuBuilder,
+                    popupMenuOnSelected: (int id, Tag tag){
+                      switch(id){
+                        case 1:
+                          Clipboard.setData(ClipboardData(text: tag.title));
+                          break;
+                        case 2:
+                          setState(() {
+                            tags.remove(tag);
+                          });
+                      }
+                    },
+                    onPressed: (tag) => print(tag),
+                  ),
+                ),
+              ),
               Expanded(
                 child: TextField(
                   decoration: InputDecoration(
@@ -236,6 +256,32 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.play_arrow),
+        // When the user taps the button
+        onPressed: () {
+          // Use setState to rebuild the widget with new values.
+          setState(() {
+            // Create a random number generator.
+            final random = Random();
+
+            // Generate a random width and height.
+//            _width = random.nextInt(300).toDouble();
+            _height = _height == 0 ? MediaQuery.of(context).size.height : 0;
+
+            // Generate a random color.
+            _color = Color.fromRGBO(
+              random.nextInt(256),
+              random.nextInt(256),
+              random.nextInt(256),
+              1,
+            );
+
+            // Generate a random border radius.
+//             _borderRadius = BorderRadius.circular(random.nextInt(100).toDouble());
+          });
+        },
       ),
     );
   }
