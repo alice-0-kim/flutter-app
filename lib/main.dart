@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
-//      home: new Button(),
+//      home: Button(),
     );
   }
 }
@@ -26,8 +26,8 @@ class FormulaRoute extends StatelessWidget {
       body: Center(
           child: Column(
             children: <Widget>[
-              new Padding(padding: new EdgeInsets.only(bottom: 30.0)),
-              new RaisedButton(
+              Padding(padding: EdgeInsets.only(bottom: 30.0)),
+              RaisedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Constant> choices = <Constant> [Constant.Logout, Constant.Settings, Constant.Sound];
 
   List<String> items = <String> [];
-  TextEditingController controller = new TextEditingController();
+  TextEditingController controller = TextEditingController();
   String filter;
 
   @override
@@ -127,66 +127,40 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: Center(
-        child: Column(
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-//            new Text("Title", style: new TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold)),
-            new Expanded(
-              child: new TextField(
-                decoration: new InputDecoration(
-                  labelText: "Search something",
-                  prefixIcon: Icon(Icons.search),
+      body: Container(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: "Search something",
+                    prefixIcon: Icon(Icons.search),
+                  ),
+                  controller: controller,
                 ),
-                controller: controller,
               ),
-            ),
-            new Expanded(
-              child: new ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return filter == null || filter == "" ? new Card(child: new Text(items[index])) : items[index].toLowerCase().contains(filter.toLowerCase()) ? new Card(child: new Text(items[index])) : new Container();
-                },
+              Expanded(
+                child: ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return filter == null || filter == "" ? Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(items[index])))
+                        : items[index].toLowerCase().contains(filter.toLowerCase()) ? Card(child: Text(items[index]))
+                        : Container();
+                  },
+                ),
               ),
-            ),
-            new Padding(padding: new EdgeInsets.only(bottom: 50.0)),
-            new RaisedButton(
-              child: new Text("Formula", style: new TextStyle(color: Colors.white, fontSize: 20.0)),
-              color: Colors.blueAccent,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FormulaRoute()),
-                );
-              },
-              padding: new EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            ),
-            new Padding(padding: new EdgeInsets.all(10.0)),
-            new RaisedButton(
-              child: new Text("Problem", style: new TextStyle(color: Colors.white, fontSize: 20.0)),
-              color: Colors.blueAccent,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProblemRoute()),
-                );
-              },
-              padding: new EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            ),
-            new Padding(padding: new EdgeInsets.only(bottom: 50.0)),
-            new Text("Made with ♥️ by Team")
-          ],
+              Text("Made with ♥️ by Team")
+            ],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ),
+      ),*/
     );
   }
 }
