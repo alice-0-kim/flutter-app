@@ -83,6 +83,10 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController controller = TextEditingController();
   String filter;
 
+  InkWell _inkWell(int index) {
+    return InkWell(onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute())); }, child: _card(index));
+  }
+
   Card _card(int index) {
     return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(items[index])));
   }
@@ -152,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: ListView.builder(
                   itemCount: items.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return _contains(index) ? _card(index) : Container();
+                    return _contains(index) ? _inkWell(index) : Container();
                   },
                   physics: BouncingScrollPhysics(),
                   padding: EdgeInsets.all(0.0),
