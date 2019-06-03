@@ -90,6 +90,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   TextEditingController controller = TextEditingController();
   String filter;
+  double _width = 50;
+  double _height = 50;
+  Color _color = Colors.green;
+  BorderRadiusGeometry _borderRadius = BorderRadius.circular(8);
 
   InkWell _inkWell(int index)
   {
@@ -98,12 +102,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Card _card(int index)
   {
-    return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(items[index].title)));
+    return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(items[index].toString())));
   }
 
   bool _contains(int index)
   {
-    return filter == null || filter == "" || items[index].title.toLowerCase().contains(filter.toLowerCase());
+    return filter == null || filter == "" || items[index].toString().toLowerCase().contains(filter.toLowerCase());
   }
 
   List<PopupMenuEntry> _popupMenuBuilder (Tag tag)
@@ -193,6 +197,20 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+//              Expanded(
+//                child: AnimatedContainer(
+//                  width: _width,
+//                  height: _height,
+//                  decoration: BoxDecoration(
+//                    color: _color,
+//                    borderRadius: _borderRadius,
+//                  ),
+//                  // Define how long the animation should take.
+//                  duration: Duration(seconds: 1),
+//                  // Provide an optional curve to make the animation feel smoother.
+//                  curve: Curves.fastOutSlowIn,
+//                )
+//              ),
               Expanded(
                 child: TextField(
                   decoration: InputDecoration(
