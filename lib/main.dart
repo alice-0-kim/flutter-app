@@ -149,10 +149,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   initState() {
     super.initState();
-    items.add(Item("Apple"));
-    items.add(Item("Bananas"));
-    items.add(Item("Milk"));
-    items.add(Item("Water"));
+    for (int i = 1; i <= 20; i++) items.add(Item(i.toString()));
+//    items.add(Item("Apple"));
+//    items.add(Item("Bananas"));
+//    items.add(Item("Milk"));
+//    items.add(Item("Water"));
     items.forEach((item) =>
         tags.add(
             Tag(
@@ -194,12 +195,14 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: Container(
+      body: SingleChildScrollView(
         child: Center(
           child: Column(
+            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Flexible(
+//              Flexible(
+              Container(
                 child: AnimatedContainer(
                   width: MediaQuery.of(context).size.width,
                   height: _height,
@@ -231,7 +234,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-              Flexible(
+//              Flexible(
+              Container(
                 child: TextField(
                   decoration: InputDecoration(
                     labelText: "Search something",
@@ -240,16 +244,25 @@ class _MyHomePageState extends State<MyHomePage> {
                   controller: controller,
                 ),
               ),
-              Flexible(
-                child: ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _contains(index) ? _inkWell(index) : Container();
-                  },
-                  physics: BouncingScrollPhysics(),
-                  padding: EdgeInsets.all(0.0),
-                ),
-//                flex: 4,
+//              Flexible(
+//                child: ListView.builder(
+//                  itemCount: items.length,
+//                  itemBuilder: (BuildContext context, int index) {
+//                    return _contains(index) ? _inkWell(index) : Container();
+//                  },
+//                  physics: BouncingScrollPhysics(),
+//                  padding: EdgeInsets.all(0.0),
+//                ),
+////                flex: 4,
+//              ),
+              ListView.builder(
+                itemCount: items.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _contains(index) ? _inkWell(index) : Container();
+                },
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.all(0.0),
+                shrinkWrap: true,
               ),
 //              Text("Made with ♥️ by Team"),
 //              Padding(padding: EdgeInsets.only(bottom: 10.0)),
