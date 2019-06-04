@@ -76,13 +76,18 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class Item {
+class Item extends Comparable {
   int id;
   String title;
   bool active;
   Item(this.title) {
     this.id = _id++;
     this.active = true;
+  }
+
+  @override
+  int compareTo(other) {
+    return int.parse(this.title).compareTo(int.parse(other.title));
   }
 }
 class _MyHomePageState extends State<MyHomePage> {
@@ -229,8 +234,25 @@ class _MyHomePageState extends State<MyHomePage> {
                             tags.remove(tag);
                           });
                       }
+//                      setState(() {
+//                        if (tag.active) {
+//                          tags.remove(tag);
+//                        } else {
+//                          tags.add(tag);
+//                        }
+//                      });
                     },
-                    onPressed: (tag) => print(tag),
+                    onPressed: (tag) {
+                      if (!tag.active) {
+                        items.removeWhere((item) => item.title == tag.title);
+                      } else {
+                        items.add(Item(tag.title));
+                      }
+                      print(tag);
+                      items.sort();
+                      print(items.length);
+                      setState(() { });
+                    },
                   ),
                 ),
               ),
