@@ -195,11 +195,11 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: SingleChildScrollView(
+      body: Container(
         child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: PageView(
+//            mainAxisSize: MainAxisSize.max,
+//            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
 //              Flexible(
               Container(
@@ -235,16 +235,27 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
 //              Flexible(
-              Container(
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: "Search something",
-                    prefixIcon: Icon(Icons.search),
-                  ),
-                  controller: controller,
-                ),
+              ListView(
+                  children: <Widget>[
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: "Search something",
+                        prefixIcon: Icon(Icons.search),
+                      ),
+                      controller: controller,
+                    ),
+                    ListView.builder(
+                        itemCount: items.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return _contains(index) ? _inkWell(index) : Container();
+                        },
+                        physics: BouncingScrollPhysics(),
+                        padding: EdgeInsets.all(0.0),
+                        shrinkWrap: true
+                    ),
+                  ]
               ),
-//              Flexible(
+//              Container(
 //                child: ListView.builder(
 //                  itemCount: items.length,
 //                  itemBuilder: (BuildContext context, int index) {
@@ -255,15 +266,15 @@ class _MyHomePageState extends State<MyHomePage> {
 //                ),
 ////                flex: 4,
 //              ),
-              ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return _contains(index) ? _inkWell(index) : Container();
-                },
-                physics: BouncingScrollPhysics(),
-                padding: EdgeInsets.all(0.0),
-                shrinkWrap: true,
-              ),
+//              ListView.builder(
+//                itemCount: items.length,
+//                itemBuilder: (BuildContext context, int index) {
+//                  return _contains(index) ? _inkWell(index) : Container();
+//                },
+//                physics: BouncingScrollPhysics(),
+//                padding: EdgeInsets.all(0.0),
+//                shrinkWrap: true,
+//              ),
 //              Text("Made with ♥️ by Team"),
 //              Padding(padding: EdgeInsets.only(bottom: 10.0)),
             ],
