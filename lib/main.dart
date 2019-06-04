@@ -199,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Expanded(
+              Flexible(
                 child: AnimatedContainer(
                   width: MediaQuery.of(context).size.width,
                   height: _height,
@@ -231,7 +231,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-              Expanded(
+              Flexible(
                 child: TextField(
                   decoration: InputDecoration(
                     labelText: "Search something",
@@ -240,7 +240,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   controller: controller,
                 ),
               ),
-              Expanded(
+              Flexible(
                 child: ListView.builder(
                   itemCount: items.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -249,10 +249,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   physics: BouncingScrollPhysics(),
                   padding: EdgeInsets.all(0.0),
                 ),
-                flex: 4,
+//                flex: 4,
               ),
-              Text("Made with ♥️ by Team"),
-              Padding(padding: EdgeInsets.only(bottom: 10.0)),
+//              Text("Made with ♥️ by Team"),
+//              Padding(padding: EdgeInsets.only(bottom: 10.0)),
             ],
           ),
         ),
