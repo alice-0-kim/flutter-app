@@ -80,9 +80,23 @@ class Item extends Comparable {
   int id;
   String title;
   bool active;
+  List<String> tags = [];
+
   Item(this.title) {
     this.id = _id++;
     this.active = true;
+  }
+
+  void addTag(String tag) {
+    tags.add(tag);
+  }
+
+  bool containsTag(String tag) {
+    return tags.contains(tag);
+  }
+
+  bool isActive(List<Tag> activeTags) {
+    return activeTags.any((tag) => tags.contains(tag.title));
   }
 
   @override
@@ -91,16 +105,13 @@ class Item extends Comparable {
   }
 }
 class _MyHomePageState extends State<MyHomePage> {
-  List<Constant> choices = [Constant.Logout, Constant.Settings, Constant.Sound];
-  List<Item>     items   = [];
-  List<Tag>      tags    = [];
+  List<Constant> choices     = [Constant.Logout, Constant.Settings, Constant.Sound];
+  List<Item>     items       = [];
+  List<Item>     activeItems = [];
+  List<Tag>      tags        = [];
 
   TextEditingController controller = TextEditingController();
   String filter;
-//  double _width = 50;
-  double _height = 0;
-  Color _color = Colors.green;
-//  BorderRadiusGeometry _borderRadius = BorderRadius.circular(8);
 
   InkWell _inkWell(int index)
   {
@@ -109,12 +120,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Card _card(int index)
   {
-    return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(items[index].title)));
+    return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(activeItems[index].title)));
   }
 
   bool _contains(int index)
   {
-    return filter == null || filter == "" || items[index].title.toLowerCase().contains(filter.toLowerCase());
+    return filter == null || filter == "" || activeItems[index].title.toLowerCase().contains(filter.toLowerCase());
   }
 
   List<PopupMenuEntry> _popupMenuBuilder(Tag tag)
@@ -137,37 +148,48 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
-  void _getActiveTags()
-  {
+  void _printActiveTags() {
     tags.where((tag) => tag.active).forEach((tag) => print(tag.title));
   }
 
-  void _getDisableTags()
+  void _printDisableTags()
   {
     tags.where((tag) => !tag.active).forEach((tag) => print(tag.title));
+  }
+
+  List<Tag> _getActiveTags()
+  {
+    return tags.where((tag) => tag.active).toList();
+  }
+
+  List<Tag> _getDisableTags()
+  {
+    return tags.where((tag) => !tag.active).toList();
   }
 
   void choiceAction(Constant choice) {
     print(choice.toString().substring(9));
   }
 
+  void updateActiveItems() {
+    activeItems = items.where((item) => item.isActive(_getActiveTags())).toList();
+    activeItems.sort();
+    setState(() { });
+  }
+
   @override
   initState() {
     super.initState();
-    for (int i = 1; i <= 20; i++) items.add(Item(i.toString()));
-//    items.add(Item("Apple"));
-//    items.add(Item("Bananas"));
-//    items.add(Item("Milk"));
-//    items.add(Item("Water"));
-    items.forEach((item) =>
-        tags.add(
-            Tag(
-              id: item.id,
-              title: item.title,
-              active: item.active,
-            )
-        )
-    );
+
+    for (int i = 1; i <= 20; i++) {
+      Item item = Item(i.toString());
+      item.addTag(i % 2 == 0 ? "even" : "odd");
+      items.add(item);
+    }
+
+    tags.add(Tag(id: 0, title: "even", active: false));
+    tags.add(Tag(id: 1, title: "odd",  active: false));
+
     controller.addListener(() {
       setState(() {
         filter = controller.text;
@@ -203,53 +225,28 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         child: Center(
           child: PageView(
-//            mainAxisSize: MainAxisSize.max,
-//            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-//              Flexible(
               Container(
-                child: AnimatedContainer(
-                  width: MediaQuery.of(context).size.width,
-                  height: _height,
-                  decoration: BoxDecoration(
-                    color: _color,
-//                  borderRadius: _borderRadius,
-                  ),
-                  // Define how long the animation should take.
-                  duration: Duration(seconds: 1),
-                  // Provide an optional curve to make the animation feel smoother.
-                  curve: Curves.fastOutSlowIn,
-                  child: SelectableTags(
-                    tags: tags,
-                    columns: 3, // default 4
-                    symmetry: true, // default false
-                    popupMenuBuilder: _popupMenuBuilder,
-                    popupMenuOnSelected: (int id, Tag tag){
-                      switch(id){
-                        case 1:
-                          Clipboard.setData(ClipboardData(text: tag.title));
-                          break;
-                        case 2:
-                          setState(() {
-                            tags.remove(tag);
-                          });
-                      }
-                    },
-                    onPressed: (tag) {
-                      if (!tag.active) {
-                        items.removeWhere((item) => item.title == tag.title);
-                      } else {
-                        items.add(Item(tag.title));
-                      }
-                      print(tag);
-                      items.sort();
-                      print(items.length);
-                      setState(() { });
-                    },
-                  ),
+                child: SelectableTags(
+                  activeColor: Colors.blueAccent,
+                  tags: tags,
+                  columns: 3, // default 4
+                  symmetry: true, // default false
+                  popupMenuBuilder: _popupMenuBuilder,
+                  popupMenuOnSelected: (int id, Tag tag){
+                    switch(id){
+                      case 1:
+                        Clipboard.setData(ClipboardData(text: tag.title));
+                        break;
+                      case 2:
+                        setState(() {
+                          tags.remove(tag);
+                        });
+                    }
+                  },
+                  onPressed: (tag) { updateActiveItems(); },
                 ),
               ),
-//              Flexible(
               ListView(
                   children: <Widget>[
                     TextField(
@@ -260,14 +257,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       controller: controller,
                     ),
                     ListView.builder(
-                        itemCount: items.length,
+                        itemCount: activeItems.length,
                         itemBuilder: (BuildContext context, int index) {
                           return _contains(index) ? _inkWell(index) : Container();
                         },
                         physics: BouncingScrollPhysics(),
                         padding: EdgeInsets.all(0.0),
                         shrinkWrap: true
-                    ),
+                    )
                   ]
               ),
             ],
@@ -278,16 +275,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.play_arrow),
         onPressed: () {
           setState(() {
-            final random = Random();
-//            _width = random.nextInt(300).toDouble();
-            _height = _height == 0 ? MediaQuery.of(context).size.height : 0;
-            _color = Color.fromRGBO(
-              random.nextInt(256),
-              random.nextInt(256),
-              random.nextInt(256),
-              1,
-            );
-//             _borderRadius = BorderRadius.circular(random.nextInt(100).toDouble());
+            // TODO: implement onPressed behavior
           });
         },
       ),
