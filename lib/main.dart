@@ -189,6 +189,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     tags.add(Tag(id: 0, title: "even", active: false));
     tags.add(Tag(id: 1, title: "odd",  active: false));
+    tags.add(Tag(id: 2, title: "differential calculus",  active: false));
+    tags.add(Tag(id: 3, title: "integration",  active: false));
+    tags.add(Tag(id: 4, title: "algebra",  active: false));
 
     controller.addListener(() {
       setState(() {
@@ -230,20 +233,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: SelectableTags(
                   activeColor: Colors.blueAccent,
                   tags: tags,
-                  columns: 3, // default 4
-                  symmetry: true, // default false
-                  popupMenuBuilder: _popupMenuBuilder,
-                  popupMenuOnSelected: (int id, Tag tag){
-                    switch(id){
-                      case 1:
-                        Clipboard.setData(ClipboardData(text: tag.title));
-                        break;
-                      case 2:
-                        setState(() {
-                          tags.remove(tag);
-                        });
-                    }
-                  },
+//                  popupMenuBuilder: _popupMenuBuilder,
+//                  popupMenuOnSelected: (int id, Tag tag){
+//                    switch(id){
+//                      case 1:
+//                        Clipboard.setData(ClipboardData(text: tag.title));
+//                        break;
+//                      case 2:
+//                        setState(() {
+//                          tags.remove(tag);
+//                        });
+//                    }
+//                  },
                   onPressed: (tag) { updateActiveItems(); },
                 ),
               ),
