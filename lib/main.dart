@@ -234,13 +234,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             tags.remove(tag);
                           });
                       }
-//                      setState(() {
-//                        if (tag.active) {
-//                          tags.remove(tag);
-//                        } else {
-//                          tags.add(tag);
-//                        }
-//                      });
                     },
                     onPressed: (tag) {
                       if (!tag.active) {
@@ -277,54 +270,23 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ]
               ),
-//              Container(
-//                child: ListView.builder(
-//                  itemCount: items.length,
-//                  itemBuilder: (BuildContext context, int index) {
-//                    return _contains(index) ? _inkWell(index) : Container();
-//                  },
-//                  physics: BouncingScrollPhysics(),
-//                  padding: EdgeInsets.all(0.0),
-//                ),
-////                flex: 4,
-//              ),
-//              ListView.builder(
-//                itemCount: items.length,
-//                itemBuilder: (BuildContext context, int index) {
-//                  return _contains(index) ? _inkWell(index) : Container();
-//                },
-//                physics: BouncingScrollPhysics(),
-//                padding: EdgeInsets.all(0.0),
-//                shrinkWrap: true,
-//              ),
-//              Text("Made with ♥️ by Team"),
-//              Padding(padding: EdgeInsets.only(bottom: 10.0)),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.play_arrow),
-        // When the user taps the button
         onPressed: () {
-          // Use setState to rebuild the widget with new values.
           setState(() {
-            // Create a random number generator.
             final random = Random();
-
-            // Generate a random width and height.
 //            _width = random.nextInt(300).toDouble();
             _height = _height == 0 ? MediaQuery.of(context).size.height : 0;
-
-            // Generate a random color.
             _color = Color.fromRGBO(
               random.nextInt(256),
               random.nextInt(256),
               random.nextInt(256),
               1,
             );
-
-            // Generate a random border radius.
 //             _borderRadius = BorderRadius.circular(random.nextInt(100).toDouble());
           });
         },
