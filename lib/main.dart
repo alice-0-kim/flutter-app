@@ -52,11 +52,19 @@ class ProblemRoute extends StatelessWidget {
         title: Text("Ploblem Route"),
       ),
       body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Go back!'),
+        child: Column(
+          children: <Widget>[
+            Hero(
+              tag: "Demo 3",
+              child: Icon(Icons.mail, size: 50.0,),
+            ),
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Go back!'),
+            ),
+          ],
         ),
       ),
     );
@@ -139,12 +147,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 highlightColor: Colors.pink,
                 child: Container(
                   alignment: AlignmentDirectional.center,
-                  child: Text(activeItems[index].title, textAlign: TextAlign.center,),
-//                      padding: EdgeInsets.all(10.0),
-//                  margin: EdgeInsets.only(right: 2.5),
+//                  child: Text(activeItems[index].title, textAlign: TextAlign.center,),
+                  child: Hero(
+                    tag: "Demo $index",
+                    child: Icon(Icons.mail, size: 50.0,)
+                  ),
                   height: _separatorHeight,
                 ),
-                onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute())); },
+                onTap: (){ print(index); Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute())); },
               ),
             ),
           ),
@@ -159,8 +169,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Container(
                   alignment: AlignmentDirectional.center,
                   child: Text(activeItems[index].title, textAlign: TextAlign.center,),
-//                      padding: EdgeInsets.all(10.0),
-//                  margin: EdgeInsets.only(left: 2.5),
                   height: _separatorHeight,
                 ),
                 onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute())); },
@@ -294,14 +302,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.play_arrow),
-        onPressed: () {
-          setState(() {
-            // TODO: implement onPressed behavior
-          });
-        },
-      ),
+//      floatingActionButton: FloatingActionButton(
+//        child: Icon(Icons.play_arrow),
+//        onPressed: () {
+//          setState(() {
+//            // TODO: implement onPressed behavior
+//          });
+//        },
+//      ),
     );
   }
 }
