@@ -290,14 +290,14 @@ class _BrowsePageState extends State<BrowsePage> {
                   onPressed: (tag) { updateActiveItems(); },
                 ),
               ),
-              ListView.separated(
+              ListView.builder(
                 itemCount: activeItems.length,
                 itemBuilder: (BuildContext context, int index) {
                   return _contains(index) ? _inkWell(_card(index)) : Container();
                 },
-                separatorBuilder: (BuildContext context, int index) {
-                  return (index + 1) % 4 == 0 ? _separator(index) : Container();
-                },
+//                separatorBuilder: (BuildContext context, int index) {
+//                  return (index + 1) % 4 == 0 ? _separator(index) : Container();
+//                },
                 physics: BouncingScrollPhysics(),
                 padding: EdgeInsets.all(0.0),
                 shrinkWrap: true,
