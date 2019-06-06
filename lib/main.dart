@@ -55,7 +55,7 @@ class ProblemRoute extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Hero(
-              tag: "Demo 3",
+              tag: "Tag 3",
               child: Icon(Icons.mail, size: 50.0,),
             ),
             RaisedButton(
@@ -149,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   alignment: AlignmentDirectional.center,
 //                  child: Text(activeItems[index].title, textAlign: TextAlign.center,),
                   child: Hero(
-                    tag: "Demo $index",
+                    tag: "Tag $index",
                     child: Icon(Icons.mail, size: 50.0,)
                   ),
                   height: _separatorHeight,
@@ -211,12 +211,13 @@ class _MyHomePageState extends State<MyHomePage> {
     for (int i = 1; i <= 20; i++) {
       Item item = Item(i.toString());
       item.addTag(i % 2 == 0 ? "even" : "odd");
+      item.addTag(i % 3 == 0 ? "integration" : "differentiation");
       items.add(item);
     }
 
     tags.add(Tag(id: 0, title: "even", active: false));
     tags.add(Tag(id: 1, title: "odd",  active: false));
-    tags.add(Tag(id: 2, title: "differential calculus",  active: false));
+    tags.add(Tag(id: 2, title: "differentiation",  active: false));
     tags.add(Tag(id: 3, title: "integration",  active: false));
     tags.add(Tag(id: 4, title: "algebra",  active: false));
 
