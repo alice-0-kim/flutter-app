@@ -73,11 +73,14 @@ class _LevelsPageState extends State<LevelsPage> {
                   RaisedButton(
                     padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                     onPressed: () {
-                      //TODO: implement behavior
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => LevelRoute(title: "K - 8th Grade", tag: "K8")));
                     },
                     child: Column(
                       children: <Widget>[
-                        Icon(Icons.airport_shuttle),
+                        Hero(
+                          tag: "K8",
+                          child: Icon(Icons.airport_shuttle),
+                        ),
                         Text("K-8"),
                       ],
                     ),
@@ -86,11 +89,14 @@ class _LevelsPageState extends State<LevelsPage> {
                   RaisedButton(
                     padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                     onPressed: () {
-                      //TODO: implement behavior
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => LevelRoute(title: "9 - 12th Grade", tag: "912")));
                     },
                     child: Column(
                       children: <Widget>[
-                        Icon(Icons.airport_shuttle),
+                        Hero(
+                          tag: "912",
+                          child: Icon(Icons.airport_shuttle),
+                        ),
                         Text("9-12"),
                       ],
                     ),
@@ -105,11 +111,14 @@ class _LevelsPageState extends State<LevelsPage> {
                   RaisedButton(
                     padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                     onPressed: () {
-                      //TODO: implement behavior
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => LevelRoute(title: "SAT", tag: "SAT")));
                     },
                     child: Column(
                       children: <Widget>[
-                        Icon(Icons.airport_shuttle),
+                        Hero(
+                          tag: "SAT",
+                          child: Icon(Icons.airport_shuttle),
+                        ),
                         Text("SAT"),
                       ],
                     ),
@@ -118,11 +127,14 @@ class _LevelsPageState extends State<LevelsPage> {
                   RaisedButton(
                     padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                     onPressed: () {
-                      //TODO: implement behavior
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => LevelRoute(title: "University", tag: "Univ")));
                     },
                     child: Column(
                       children: <Widget>[
-                        Icon(Icons.airport_shuttle),
+                        Hero(
+                          tag: "Univ",
+                          child: Icon(Icons.airport_shuttle),
+                        ),
                         Text("Univ"),
                       ],
                     ),
@@ -148,14 +160,12 @@ class BrowsePage extends StatefulWidget {
 }
 
 class _BrowsePageState extends State<BrowsePage> {
-//  List<Choice> _choices     = [Choice.Logout, Choice.Settings, Choice.Sound];
   List<Item>     items       = [];
   List<Item>     activeItems = [];
   List<Tag>      tags        = [];
 
   TextEditingController controller = TextEditingController();
   String filter;
-  double _separatorHeight = 100.0;
 
   InkWell _inkWell(Card card) {
     return InkWell(onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute())); }, child: card);
@@ -165,52 +175,6 @@ class _BrowsePageState extends State<BrowsePage> {
     return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(activeItems[index].title)));
   }
 
-  Card _separator(int index) {
-    return Card(
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Material(
-              color: Colors.blueAccent,
-              borderRadius: BorderRadius.circular(5.0),
-              child: InkWell(
-                splashColor: Colors.pinkAccent,
-                highlightColor: Colors.pink,
-                child: Container(
-                  alignment: AlignmentDirectional.center,
-//                  child: Text(activeItems[index].title, textAlign: TextAlign.center,),
-                  child: Hero(
-                      tag: "Tag $index",
-                      child: Icon(Icons.mail, size: 50.0,)
-                  ),
-                  height: _separatorHeight,
-                ),
-                onTap: (){ print(index); Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute())); },
-              ),
-            ),
-          ),
-          Padding(padding: EdgeInsets.all(2.5),),
-          Expanded(
-            child: Material(
-              color: Colors.blueAccent,
-              borderRadius: BorderRadius.circular(5.0),
-              child: InkWell(
-                splashColor: Colors.pinkAccent,
-                highlightColor: Colors.pink,
-                child: Container(
-                  alignment: AlignmentDirectional.center,
-                  child: Text(activeItems[index].title, textAlign: TextAlign.center,),
-                  height: _separatorHeight,
-                ),
-                onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute())); },
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   bool _contains(int index) {
     return filter == null || filter == "" || activeItems[index].title.toLowerCase().contains(filter.toLowerCase());
   }
@@ -218,14 +182,6 @@ class _BrowsePageState extends State<BrowsePage> {
   List<Tag> _getActiveTags() {
     return tags.where((tag) => tag.active).toList();
   }
-
-  List<Tag> _getDisableTags() {
-    return tags.where((tag) => !tag.active).toList();
-  }
-
-//  void choiceAction(Choice choice) {
-//    print(choice.toString().substring(9));
-//  }
 
   void updateActiveItems() {
     activeItems = items.where((item) => item.isActive(_getActiveTags())).toList();
@@ -295,9 +251,6 @@ class _BrowsePageState extends State<BrowsePage> {
                 itemBuilder: (BuildContext context, int index) {
                   return _contains(index) ? _inkWell(_card(index)) : Container();
                 },
-//                separatorBuilder: (BuildContext context, int index) {
-//                  return (index + 1) % 4 == 0 ? _separator(index) : Container();
-//                },
                 physics: BouncingScrollPhysics(),
                 padding: EdgeInsets.all(0.0),
                 shrinkWrap: true,
