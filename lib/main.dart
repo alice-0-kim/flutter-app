@@ -28,17 +28,17 @@ class FormulaRoute extends StatelessWidget {
         title: Text("Formula Route"),
       ),
       body: Center(
-          child: Column(
-            children: <Widget>[
-              Padding(padding: EdgeInsets.only(bottom: 30.0)),
-              RaisedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('Go back!'),
-              ),
-            ],
-          )
+        child: Column(
+          children: <Widget>[
+            Padding(padding: EdgeInsets.only(bottom: 30.0)),
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Go back!'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -112,49 +112,68 @@ class _MyHomePageState extends State<MyHomePage> {
 
   TextEditingController controller = TextEditingController();
   String filter;
+  double _separatorHeight = 100.0;
 
-  InkWell _inkWell(int index)
-  {
-    return InkWell(onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute())); }, child: _card(index));
+//  InkWell _inkWell(int index) {
+//    return InkWell(onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute())); }, child: _card(index));
+//  }
+
+  InkWell _inkWell(Card card) {
+    return InkWell(onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute())); }, child: card);
   }
 
-  Card _card(int index)
-  {
+  Card _card(int index) {
     return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(activeItems[index].title)));
   }
 
-  bool _contains(int index)
-  {
+  Card _separator(int index) {
+    return Card(
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Material(
+              color: Colors.blueAccent,
+              borderRadius: BorderRadius.circular(5.0),
+              child: InkWell(
+                splashColor: Colors.pinkAccent,
+                highlightColor: Colors.pink,
+                child: Container(
+                  alignment: AlignmentDirectional.center,
+                  child: Text(activeItems[index].title, textAlign: TextAlign.center,),
+//                      padding: EdgeInsets.all(10.0),
+//                  margin: EdgeInsets.only(right: 2.5),
+                  height: _separatorHeight,
+                ),
+                onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute())); },
+              ),
+            ),
+          ),
+          Padding(padding: EdgeInsets.all(2.5),),
+          Expanded(
+            child: Material(
+              color: Colors.blueAccent,
+              borderRadius: BorderRadius.circular(5.0),
+              child: InkWell(
+                splashColor: Colors.pinkAccent,
+                highlightColor: Colors.pink,
+                child: Container(
+                  alignment: AlignmentDirectional.center,
+                  child: Text(activeItems[index].title, textAlign: TextAlign.center,),
+//                      padding: EdgeInsets.all(10.0),
+//                  margin: EdgeInsets.only(left: 2.5),
+                  height: _separatorHeight,
+                ),
+                onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute())); },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool _contains(int index) {
     return filter == null || filter == "" || activeItems[index].title.toLowerCase().contains(filter.toLowerCase());
-  }
-
-  List<PopupMenuEntry> _popupMenuBuilder(Tag tag)
-  {
-    return <PopupMenuEntry>[
-      PopupMenuItem(
-        child: Text(tag.title, style: TextStyle(color: Colors.blue)),
-        enabled: false,
-      ),
-      PopupMenuDivider(),
-      PopupMenuItem(
-        value: 1,
-        child: Row(
-          children: <Widget>[
-            Icon(Icons.content_copy),
-            Text("Copy text"),
-          ],
-        ),
-      ),
-    ];
-  }
-
-  void _printActiveTags() {
-    tags.where((tag) => tag.active).forEach((tag) => print(tag.title));
-  }
-
-  void _printDisableTags()
-  {
-    tags.where((tag) => !tag.active).forEach((tag) => print(tag.title));
   }
 
   List<Tag> _getActiveTags()
@@ -249,24 +268,27 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               ListView(
-                  children: <Widget>[
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: "Search something",
-                        prefixIcon: Icon(Icons.search),
-                      ),
-                      controller: controller,
+                children: <Widget>[
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: "Search something",
+                      prefixIcon: Icon(Icons.search),
                     ),
-                    ListView.builder(
-                        itemCount: activeItems.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return _contains(index) ? _inkWell(index) : Container();
-                        },
-                        physics: BouncingScrollPhysics(),
-                        padding: EdgeInsets.all(0.0),
-                        shrinkWrap: true
-                    )
-                  ]
+                    controller: controller,
+                  ),
+                  ListView.separated(
+                    itemCount: activeItems.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return _contains(index) ? _inkWell(_card(index)) : Container();
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return (index + 1) % 4 == 0 ? _separator(index) : Container();
+                    },
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.all(0.0),
+                    shrinkWrap: true,
+                  ),
+                ],
               ),
             ],
           ),
