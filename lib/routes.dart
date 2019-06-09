@@ -2,6 +2,71 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'pages.dart';
 
+class CommentRoute extends StatelessWidget {
+  CommentRoute(this.item);
+
+  final Item item;
+
+  Widget _comment() {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.black45,
+          ),
+        ),
+      ),
+      padding: EdgeInsets.symmetric(vertical: 5.0),
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(right: 10.0),
+                child: Text("User", style: TextStyle(fontWeight: FontWeight.bold),),
+              ),
+              Text(new DateTime.now().toString()),
+            ],
+          ),
+          Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+        ],
+      ),
+    );
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Comments"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: ListView(
+        padding: EdgeInsets.all(10.0),
+        children: <Widget>[
+          _comment(),
+          _comment(),
+          _comment(),
+          _comment(),
+          _comment(),
+          _comment(),
+          _comment(),
+          _comment(),
+          _comment(),
+          _comment(),
+          _comment(),
+        ],
+      ),
+    );
+  }
+}
+
 class FormulaRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -39,7 +104,7 @@ class ProblemRoute extends StatelessWidget {
       ),
       body: Center(
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 15.0),
+          padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
           children: <Widget>[
             SelectableTags(
               activeColor: Colors.white,
@@ -57,17 +122,19 @@ class ProblemRoute extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 5.0, right: 5.0, bottom: 5.0),
-                  child: Icon(Icons.thumb_up),
+                IconButton(
+                  icon: Icon(Icons.thumb_up),
+                  onPressed: () {},
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.0, right: 5.0, bottom: 5.0),
-                  child: Icon(Icons.bookmark_border),
+                IconButton(
+                  icon: Icon(Icons.bookmark_border),
+                  onPressed: () {},
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 5.0),
-                  child: Icon(Icons.message),
+                IconButton(
+                  icon: Icon(Icons.message),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CommentRoute(item)));
+                  },
                 ),
               ],
             ),
