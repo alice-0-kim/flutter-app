@@ -38,52 +38,44 @@ class ProblemRoute extends StatelessWidget {
         title: Text(item.title),
       ),
       body: Center(
-        child: Column(
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 15.0),
           children: <Widget>[
-//            Hero(
-//              tag: "Tag 3",
-//              child: Icon(Icons.mail, size: 50.0,),
-//            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.0, top: 50.0, right: 20.0, bottom: 20.0),
-              child: Text(item.title, style: TextStyle(fontWeight: FontWeight.bold),),
+            SelectableTags(
+              activeColor: Colors.white,
+              textActiveColor: Colors.black,
+              tags: item.tags,
+              backgroundContainer: Colors.transparent,
+              alignment: MainAxisAlignment.start,
+              fontSize: 12.0,
             ),
-            Text("Level: ${item.level.toString().split('.').last}"),
             Padding(
-              padding: EdgeInsets.all(20.0),
-//              child: ListView.builder(
-//                itemCount: item.tags.length,
-//                itemBuilder: (BuildContext context, int index) {
-//                  return Text(item.tags[index].title);
-//                },
-//                physics: BouncingScrollPhysics(),
-//                padding: EdgeInsets.all(0.0),
-//                shrinkWrap: true,
-//              ),
-              child: SelectableTags(
-                activeColor: Colors.white,
-                textActiveColor: Colors.black,
-                tags: item.tags,
-                backgroundContainer: Colors.transparent,
-                alignment: MainAxisAlignment.start,
-//                onPressed: (tag) { setState(() {}); },
-              ),
+              padding: EdgeInsets.only(bottom: 20.0),
+              child: Text(item.title, style: TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+            ),
+            Text("Level: ${item.level.toString().split('.').last}", textAlign: TextAlign.end,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 5.0, right: 5.0, bottom: 5.0),
+                  child: Icon(Icons.thumb_up),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 5.0, right: 5.0, bottom: 5.0),
+                  child: Icon(Icons.bookmark_border),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5.0),
+                  child: Icon(Icons.message),
+                ),
+              ],
             ),
             Text(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12.0),
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lacus odio, condimentum a consequat tincidunt, egestas quis mi. Vivamus pellentesque orci tellus, sodales posuere magna sodales cursus. Nulla euismod libero neque, ac iaculis lorem convallis ac. Integer placerat sapien ac arcu luctus, pharetra cursus odio iaculis. Proin maximus a odio in dapibus. Fusce eu porttitor ligula, nec suscipit erat. Cras blandit, erat eu varius cursus, mauris libero tempor nibh, eget aliquet lectus sapien vel massa. Sed felis lorem, semper in condimentum non, aliquam ac odio. Fusce efficitur tempor tortor in pharetra. Proin enim massa, dignissim vitae lorem ut, ultricies bibendum quam. Proin imperdiet, tellus vitae imperdiet interdum, metus nisi vestibulum sapien, in facilisis metus nisi in nisi. Phasellus molestie commodo semper. \n Ut sit amet massa vitae enim finibus malesuada vel quis libero. Donec sagittis tincidunt leo, et pharetra mauris posuere a. Nulla tempus tellus enim, et auctor lacus gravida eget. Cras mattis augue a tortor rhoncus feugiat. Vivamus faucibus congue nulla, sit amet blandit tortor condimentum eu. Cras ac est lacinia, ornare ante ut, scelerisque ipsum. Quisque eros sapien, iaculis ut ipsum sit amet, placerat convallis justo. Suspendisse rhoncus nibh mi, non imperdiet mi rutrum vel. Maecenas nec urna velit. \n Nunc facilisis mauris in condimentum aliquam. Cras ullamcorper eros non viverra ultrices. Suspendisse potenti. Pellentesque sit amet urna ac mauris porta efficitur. Nullam hendrerit lacus eu leo elementum, quis ultrices nisi placerat. Nam vitae est commodo, malesuada ante eu, faucibus turpis. Aenean egestas justo quis sem ornare, ut iaculis nulla maximus. Pellentesque tristique tellus in tempor sodales. Aliquam semper laoreet nisi placerat condimentum. Nulla sit amet elit sed nulla consequat ultrices sodales in nisl. Quisque et ultrices orci. Donec dictum dolor erat, vel malesuada leo rutrum sodales.",
+              textAlign: TextAlign.justify,
+//              style: TextStyle(fontSize: 12.0),
             ),
-//            Padding(
-//              padding: EdgeInsets.all(20.0),
-//              child:
-//              FlatButton(
-//                onPressed: () {
-//                  Navigator.pop(context);
-//                },
-//                child: Text('Go back'),
-//              ),
-//            ),
           ],
         ),
       ),
@@ -97,33 +89,6 @@ class LevelRoute extends StatelessWidget {
 
   final String title, tag;
   final Level level;
-
-//  InkWell _inkWell(Card card) {
-//    return InkWell(onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute())); }, child: card);
-//  }
-
-//  List<Item> items = [];
-//
-//  void _initItems() {
-//    Item item1 = Item("K-8 1", Level.K8);
-//    item1.addTag("algebra");
-//    Item item2 = Item("K-8 2", Level.K8);
-//    Item item3 = Item("K-8 3", Level.K8);
-//    Item item4 = Item("High 1", Level.High);
-//    item4.addTag("differentiation");
-//    Item item5 = Item("High 2", Level.High);
-//    item5.addTag("integration");
-//    Item item6 = Item("High 3", Level.High);
-//    Item item7 = Item("Univ 1", Level.Univ);
-//    item7.addTag("calculus Ⅱ");
-//    Item item8 = Item("Univ 2", Level.Univ);
-//    Item item9 = Item("Univ 3", Level.Univ);
-//    Item item10 = Item("SAT 1", Level.SAT);
-//    item10.addTag("important");
-//    Item item11 = Item("SAT 2", Level.SAT);
-//    Item item12 = Item("SAT 3", Level.SAT);
-//    items.addAll([item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12]);
-//  }
 
   Card _card(int index) {
     return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(items[index].title)));
