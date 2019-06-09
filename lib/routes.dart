@@ -16,7 +16,7 @@ class CommentRoute extends StatelessWidget {
           ),
         ),
       ),
-      padding: EdgeInsets.symmetric(vertical: 5.0),
+      padding: EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
         children: <Widget>[
           Row(
@@ -47,22 +47,57 @@ class CommentRoute extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
-        padding: EdgeInsets.all(10.0),
+      body: Stack(
         children: <Widget>[
-          _comment(),
-          _comment(),
-          _comment(),
-          _comment(),
-          _comment(),
-          _comment(),
-          _comment(),
-          _comment(),
-          _comment(),
-          _comment(),
-          _comment(),
+          ListView(
+            padding: EdgeInsets.all(10.0),
+            children: <Widget>[
+              _comment(),
+              _comment(),
+              _comment(),
+              _comment(),
+              _comment(),
+              _comment(),
+              _comment(),
+              _comment(),
+              _comment(),
+              _comment(),
+              _comment(),
+            ],
+          ),
+          Positioned(
+            bottom: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              child: TextField(
+                onSubmitted: (String submitted) {
+                  // TODO: this is gotta be a stateful widget then...
+                },
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(20.0),
+                  hintText: "Add comment...",
+                ),
+              ),
+            ),
+          ),
         ],
       ),
+//      bottomNavigationBar: Padding(
+//        padding: MediaQuery.of(context).viewInsets,
+//        child: BottomNavigationBar(
+//          items: <BottomNavigationBarItem>[
+//            BottomNavigationBarItem(
+//              icon: Icon(Icons.add),
+//              title: Text("Add"),
+//            ),
+//            BottomNavigationBarItem(
+//              icon: Icon(Icons.add),
+//              title: Text("Add"),
+//            ),
+//          ],
+//        ),
+//      ),
     );
   }
 }
