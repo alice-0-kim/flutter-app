@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'pages.dart';
 
-class CommentRoute extends StatelessWidget {
-  CommentRoute(this.item);
+class _CommentPageState extends State<CommentPage> {
+  static const String DEFAULT_COMMENT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+  List<String> _comments = [DEFAULT_COMMENT, DEFAULT_COMMENT, DEFAULT_COMMENT, DEFAULT_COMMENT, DEFAULT_COMMENT];
 
-  final Item item;
+  TextEditingController controller = TextEditingController();
 
-  Widget _comment() {
+  Widget _comment(String comment) {
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -28,12 +29,21 @@ class CommentRoute extends StatelessWidget {
               Text(new DateTime.now().toString()),
             ],
           ),
-          Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+          Text(comment, textAlign: TextAlign.left,),
         ],
       ),
     );
   }
 
+  void _addComment(String comment) {
+    _comments.add(comment);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,21 +59,28 @@ class CommentRoute extends StatelessWidget {
       ),
       body: Stack(
         children: <Widget>[
-          ListView(
+//          ListView(
+//            padding: EdgeInsets.all(10.0),
+//            children: <Widget>[
+//              _comment(DEFAULT_COMMENT),
+//              _comment(DEFAULT_COMMENT),
+//              _comment(DEFAULT_COMMENT),
+//              _comment(DEFAULT_COMMENT),
+//              _comment(DEFAULT_COMMENT),
+//              _comment(DEFAULT_COMMENT),
+//              _comment(DEFAULT_COMMENT),
+//              _comment(DEFAULT_COMMENT),
+//              _comment(DEFAULT_COMMENT),
+//              _comment(DEFAULT_COMMENT),
+//              _comment(DEFAULT_COMMENT),
+//            ],
+//          ),
+          ListView.builder(
             padding: EdgeInsets.all(10.0),
-            children: <Widget>[
-              _comment(),
-              _comment(),
-              _comment(),
-              _comment(),
-              _comment(),
-              _comment(),
-              _comment(),
-              _comment(),
-              _comment(),
-              _comment(),
-              _comment(),
-            ],
+            itemCount: _comments.length,
+            itemBuilder: (BuildContext context, int index) {
+              return _comment(_comments[index]);
+            },
           ),
           Positioned(
             bottom: 0,
@@ -71,9 +88,13 @@ class CommentRoute extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               color: Colors.white,
               child: TextField(
+                autofocus: true,
                 onSubmitted: (String submitted) {
-                  // TODO: this is gotta be a stateful widget then...
+                  setState(() {
+                    _addComment(submitted);
+                  });
                 },
+                controller: controller,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(20.0),
                   hintText: "Add comment...",
@@ -83,23 +104,17 @@ class CommentRoute extends StatelessWidget {
           ),
         ],
       ),
-//      bottomNavigationBar: Padding(
-//        padding: MediaQuery.of(context).viewInsets,
-//        child: BottomNavigationBar(
-//          items: <BottomNavigationBarItem>[
-//            BottomNavigationBarItem(
-//              icon: Icon(Icons.add),
-//              title: Text("Add"),
-//            ),
-//            BottomNavigationBarItem(
-//              icon: Icon(Icons.add),
-//              title: Text("Add"),
-//            ),
-//          ],
-//        ),
-//      ),
     );
   }
+}
+class CommentPage extends StatefulWidget {
+  CommentPage({Key key, this.title, this.item}) : super(key: key);
+
+  final String title;
+  final Item item;
+
+  @override
+  _CommentPageState createState() => _CommentPageState();
 }
 
 class FormulaRoute extends StatelessWidget {
@@ -168,7 +183,7 @@ class ProblemRoute extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.message),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => CommentRoute(item)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CommentPage(title: "Comments", item: item)));
                   },
                 ),
               ],
