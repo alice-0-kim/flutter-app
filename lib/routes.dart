@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'pages.dart';
 import 'comment.dart';
+import 'content.dart';
 
 //class _CommentPageState extends State<CommentPage> {
 //  static const String DEFAULT_COMMENT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
@@ -129,7 +130,7 @@ class FormulaRoute extends StatelessWidget {
 class ProblemRoute extends StatelessWidget {
   ProblemRoute(this.item);
 
-  final Item item;
+  final Content item;
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +145,7 @@ class ProblemRoute extends StatelessWidget {
             SelectableTags(
               activeColor: Colors.white,
               textActiveColor: Colors.black,
-              tags: item.tags,
+              tags: item.tags.map((tag) => Tag(id:tag.hashCode, title: tag)).toList(),
               backgroundContainer: Colors.transparent,
               alignment: MainAxisAlignment.start,
               fontSize: 12.0,
@@ -193,7 +194,7 @@ class LevelRoute extends StatelessWidget {
   final Level level;
 
   Card _card(int index) {
-    return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(items[index].title)));
+    return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(contents[index].title)));
   }
 
   @override
@@ -224,9 +225,9 @@ class LevelRoute extends StatelessWidget {
                 style: TextStyle(fontSize: 12.0),
               ),
               ListView.builder(
-                itemCount: items.length,
+                itemCount: contents.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return items[index].level == level ? InkWell(onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute(items[index]))); }, child: _card(index)) : Container();
+                  return contents[index].level == level ? InkWell(onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute(contents[index]))); }, child: _card(index)) : Container();
                 },
                 physics: BouncingScrollPhysics(),
                 padding: EdgeInsets.all(0.0),

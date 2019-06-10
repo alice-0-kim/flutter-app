@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'pages.dart';
+import 'content.dart';
 
 class CommentPage extends StatefulWidget {
   CommentPage({Key key, this.title, this.item}) : super(key: key);
 
   final String title;
-  final Item item;
+  final Content item;
 
   @override
   _CommentPageState createState() {
@@ -84,7 +84,7 @@ class _CommentPageState extends State<CommentPage> {
 
     return Padding(
       key: ValueKey(record.user),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.5),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         decoration: BoxDecoration(
