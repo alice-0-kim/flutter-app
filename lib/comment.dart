@@ -16,6 +16,16 @@ class CommentPage extends StatefulWidget {
 }
 
 class _CommentPageState extends State<CommentPage> {
+  void _addComment(String user, String text) {
+    Firestore.instance.runTransaction((transaction) async {
+      await transaction.set(Firestore.instance.collection("comment").document(), {
+        "user": "user",
+        "text": text,
+        "timestamp": new Timestamp.now(),
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +57,8 @@ class _CommentPageState extends State<CommentPage> {
               autofocus: true,
               onSubmitted: (String submitted) {
                 setState(() {
-                  // TODO: update behaviour
+                  // TODO: replace dummy values to real user-provided value
+                  _addComment("User", submitted);
                 });
               },
               decoration: InputDecoration(
