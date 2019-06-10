@@ -59,22 +59,6 @@ class _CommentPageState extends State<CommentPage> {
       ),
       body: Stack(
         children: <Widget>[
-//          ListView(
-//            padding: EdgeInsets.all(10.0),
-//            children: <Widget>[
-//              _comment(DEFAULT_COMMENT),
-//              _comment(DEFAULT_COMMENT),
-//              _comment(DEFAULT_COMMENT),
-//              _comment(DEFAULT_COMMENT),
-//              _comment(DEFAULT_COMMENT),
-//              _comment(DEFAULT_COMMENT),
-//              _comment(DEFAULT_COMMENT),
-//              _comment(DEFAULT_COMMENT),
-//              _comment(DEFAULT_COMMENT),
-//              _comment(DEFAULT_COMMENT),
-//              _comment(DEFAULT_COMMENT),
-//            ],
-//          ),
           ListView.builder(
             padding: EdgeInsets.all(10.0),
             itemCount: _comments.length,
