@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'pages.dart';
 
 class CommentPage extends StatefulWidget {
@@ -28,8 +29,6 @@ class _CommentPageState extends State<CommentPage> {
       stream: Firestore.instance.collection('comment').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
-
-//        return _buildList(context, snapshot.data.documents);
         return _buildStack(context, snapshot.data.documents);
       },
     );
@@ -98,7 +97,7 @@ class _CommentPageState extends State<CommentPage> {
                   padding: EdgeInsets.only(right: 10.0),
                   child: Text(record.user, style: TextStyle(fontWeight: FontWeight.bold),),
                 ),
-                Text(new DateTime.now().toString()),
+                Text(new DateFormat('yyyy-MM-dd HH:mm:ss').format(record.timestamp.toDate())),
               ],
             ),
             Text(record.text, textAlign: TextAlign.left,),
@@ -112,17 +111,17 @@ class _CommentPageState extends State<CommentPage> {
 class Record {
   final String user;
   final String text;
-//  final String timestamp;
+  final Timestamp timestamp;
 //  final int votes;
   final DocumentReference reference;
 
   Record.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['user'] != null),
         assert(map['text'] != null),
-//        assert(map['timestamp'] != null),
+        assert(map['timestamp'] != null),
         user = map['user'],
-        text = map['text'];
-//        timestamp = map['timestamp'];
+        text = map['text'],
+        timestamp = map['timestamp'];
 
   Record.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
