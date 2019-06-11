@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'auth.dart';
 import 'levels.dart';
 import 'browse.dart';
 import 'pop_up_menu.dart';
@@ -37,28 +38,35 @@ class _MyHomePageState extends State<MyHomePage> {
           buildPopupMenuButton(),
         ],
       ),
-      body: Container(
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              Container(
-                child: RaisedButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => BrowsePage(title: "Browse")));
-                  },
-                  child: Text('Browse'),
-                ),
+      body: SignIn(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            Container(
+              child: RaisedButton(
+                child: Text('Browse'),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => BrowsePage(title: "Browse")));
+                },
               ),
-              Container(
-                child: RaisedButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => LevelsPage(title: "Levels")));
-                  },
-                  child: Text('Levels'),
-                ),
+            ),
+            Container(
+              child: RaisedButton(
+                child: Text('Levels'),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => LevelsPage(title: "Levels")));
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
