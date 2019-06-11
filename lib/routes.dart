@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/selectable_tags.dart';
-import 'pages.dart';
 import 'comment.dart';
 import 'content.dart';
 
@@ -87,57 +86,57 @@ class ProblemRoute extends StatelessWidget {
   }
 }
 
-class LevelRoute extends StatelessWidget {
-
-  LevelRoute({this.title, this.tag, this.level});
-
-  final String title, tag;
-  final Level level;
-
-  Card _card(int index) {
-    return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(contents[index].title)));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Container(
-        padding: EdgeInsets.all(30.0),
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Hero(
-                  tag: tag,
-                  child: Icon(Icons.airport_shuttle, size: 50.0,),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 20.0),
-                child: Text(title),
-              ),
-              Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12.0),
-              ),
-              ListView.builder(
-                itemCount: contents.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return contents[index].level == level ? InkWell(onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute(contents[index]))); }, child: _card(index)) : Container();
-                },
-                physics: BouncingScrollPhysics(),
-                padding: EdgeInsets.all(0.0),
-                shrinkWrap: true,
-              ),
-            ],
-          ),
-        ),
-      )
-    );
-  }
-}
+//class LevelRoute extends StatelessWidget {
+//
+//  LevelRoute({this.title, this.tag, this.level});
+//
+//  final String title, tag;
+//  final Level level;
+//
+//  Card _card(int index) {
+//    return Card(child: Padding(padding: const EdgeInsets.all(16.0), child: Text(contents[index].title)));
+//  }
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return Scaffold(
+//      appBar: AppBar(
+//        title: Text(title),
+//      ),
+//      body: Container(
+//        padding: EdgeInsets.all(30.0),
+//        child: Center(
+//          child: Column(
+//            children: <Widget>[
+//              Padding(
+//                padding: EdgeInsets.all(20.0),
+//                child: Hero(
+//                  tag: tag,
+//                  child: Icon(Icons.airport_shuttle, size: 50.0,),
+//                ),
+//              ),
+//              Padding(
+//                padding: EdgeInsets.only(bottom: 20.0),
+//                child: Text(title),
+//              ),
+//              Text(
+//                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+//                textAlign: TextAlign.center,
+//                style: TextStyle(fontSize: 12.0),
+//              ),
+//              ListView.builder(
+//                itemCount: contents.length,
+//                itemBuilder: (BuildContext context, int index) {
+//                  return contents[index].level == level ? InkWell(onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => ProblemRoute(contents[index]))); }, child: _card(index)) : Container();
+//                },
+//                physics: BouncingScrollPhysics(),
+//                padding: EdgeInsets.all(0.0),
+//                shrinkWrap: true,
+//              ),
+//            ],
+//          ),
+//        ),
+//      )
+//    );
+//  }
+//}
