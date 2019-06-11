@@ -54,7 +54,7 @@ class _CommentPageState extends State<CommentPage> {
             width: MediaQuery.of(context).size.width,
             color: Colors.white,
             child: TextField(
-              autofocus: true,
+//              autofocus: true,
               onSubmitted: (String submitted) {
                 setState(() {
                   // TODO: replace dummy values to real user-provided value

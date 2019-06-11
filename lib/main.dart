@@ -144,7 +144,7 @@ class MyHomePageState extends State<MyHomePage> {
   Widget _buildBody() {
     if (_currentUser != null) {
       return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
 //          ListTile(
 //            leading: GoogleUserCircleAvatar(
@@ -195,15 +195,16 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-          actions: <Widget>[
-            buildPopupMenuButton(),
-          ],
-        ),
-        body: ConstrainedBox(
-          constraints: const BoxConstraints.expand(),
-          child: _buildBody(),
-        ));
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: <Widget>[
+          buildPopupMenuButton(),
+        ],
+      ),
+      body: ConstrainedBox(
+        constraints: const BoxConstraints.expand(),
+        child: _buildBody(),
+      ),
+    );
   }
 }
