@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
-          popupMenuButton(),
+          buildPopupMenuButton(),
         ],
       ),
       body: Container(

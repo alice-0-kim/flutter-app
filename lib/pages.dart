@@ -10,13 +10,26 @@ enum Choice {
 
 List<Content> contents = [];
 
-List<Choice> _choices = [Choice.Logout, Choice.Settings, Choice.Sound];
+//List<Choice> _choices = [Choice.Logout, Choice.Settings, Choice.Sound];
 
-List<PopupMenuItem<Choice>> popupMenuItems() => _choices.map((choice) { return PopupMenuItem<Choice>(value: choice, child: Text(choice.toString().split('.').last),);}).toList();
+List<PopupMenuItem<Choice>> buildPopupMenuItems() =>
+    [Choice.Logout, Choice.Settings, Choice.Sound].map((choice){
+      return PopupMenuItem<Choice>(
+        value: choice,
+        child: Text(choice.toString().split('.').last),
+      );
+    }).toList();
 
-void choiceAction(Choice choice) => print(choice.toString().split('.').last);
+//void choiceAction(Choice choice) =>
+//    print(choice.toString().split('.').last);
 
-PopupMenuButton<Choice> popupMenuButton() => PopupMenuButton<Choice>(onSelected: choiceAction, itemBuilder: (BuildContext context) { return popupMenuItems(); },);
+PopupMenuButton<Choice> buildPopupMenuButton() =>
+    PopupMenuButton<Choice>(
+      onSelected: (choice) => print(choice.toString().split('.').last),
+      itemBuilder: (BuildContext context){
+        return buildPopupMenuItems();
+      },
+    );
 
 class LevelsPage extends StatefulWidget {
   LevelsPage({Key key, this.title}) : super(key: key);
@@ -28,13 +41,32 @@ class LevelsPage extends StatefulWidget {
 }
 
 class _LevelsPageState extends State<LevelsPage> {
+
+  Widget _buildRaisedButton(String title, String tag, Level level, String label) {
+    return RaisedButton(
+      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LevelRoute(title: title, tag: tag, level: level,)));
+      },
+      child: Column(
+        children: <Widget>[
+          Hero(
+            tag: tag,
+            child: Icon(Icons.airport_shuttle),
+          ),
+          Text(label),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
-          popupMenuButton(),
+          buildPopupMenuButton(),
         ],
       ),
       body: Container(
@@ -46,37 +78,39 @@ class _LevelsPageState extends State<LevelsPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  RaisedButton(
-                    padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => LevelRoute(title: "K - 8th Grade", tag: "K8", level: Level.K8,)));
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        Hero(
-                          tag: "K8",
-                          child: Icon(Icons.airport_shuttle),
-                        ),
-                        Text("K-8"),
-                      ],
-                    ),
-                  ),
+                  _buildRaisedButton("K - 8th Grade", "K8", Level.K8, "K-8"),
+//                  RaisedButton(
+//                    padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+//                    onPressed: () {
+//                      Navigator.push(context, MaterialPageRoute(builder: (context) => LevelRoute(title: "K - 8th Grade", tag: "K8", level: Level.K8,)));
+//                    },
+//                    child: Column(
+//                      children: <Widget>[
+//                        Hero(
+//                          tag: "K8",
+//                          child: Icon(Icons.airport_shuttle),
+//                        ),
+//                        Text("K-8"),
+//                      ],
+//                    ),
+//                  ),
                   Padding(padding: EdgeInsets.all(2.5)),
-                  RaisedButton(
-                    padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => LevelRoute(title: "9 - 12th Grade", tag: "912", level: Level.High,)));
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        Hero(
-                          tag: "912",
-                          child: Icon(Icons.airport_shuttle),
-                        ),
-                        Text("9-12"),
-                      ],
-                    ),
-                  ),
+                  _buildRaisedButton("9 - 12th Grade", "912", Level.High, "High"),
+//                  RaisedButton(
+//                    padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+//                    onPressed: () {
+//                      Navigator.push(context, MaterialPageRoute(builder: (context) => LevelRoute(title: "9 - 12th Grade", tag: "912", level: Level.High,)));
+//                    },
+//                    child: Column(
+//                      children: <Widget>[
+//                        Hero(
+//                          tag: "912",
+//                          child: Icon(Icons.airport_shuttle),
+//                        ),
+//                        Text("9-12"),
+//                      ],
+//                    ),
+//                  ),
                 ],
               ),
               Padding(padding: EdgeInsets.all(2.5)),
@@ -84,37 +118,39 @@ class _LevelsPageState extends State<LevelsPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  RaisedButton(
-                    padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => LevelRoute(title: "SAT", tag: "SAT", level: Level.SAT,)));
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        Hero(
-                          tag: "SAT",
-                          child: Icon(Icons.airport_shuttle),
-                        ),
-                        Text("SAT"),
-                      ],
-                    ),
-                  ),
+                  _buildRaisedButton("SAT", "SAT", Level.SAT, "SAT"),
+//                  RaisedButton(
+//                    padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+//                    onPressed: () {
+//                      Navigator.push(context, MaterialPageRoute(builder: (context) => LevelRoute(title: "SAT", tag: "SAT", level: Level.SAT,)));
+//                    },
+//                    child: Column(
+//                      children: <Widget>[
+//                        Hero(
+//                          tag: "SAT",
+//                          child: Icon(Icons.airport_shuttle),
+//                        ),
+//                        Text("SAT"),
+//                      ],
+//                    ),
+//                  ),
                   Padding(padding: EdgeInsets.all(2.5)),
-                  RaisedButton(
-                    padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => LevelRoute(title: "University", tag: "Univ", level: Level.Univ,)));
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        Hero(
-                          tag: "Univ",
-                          child: Icon(Icons.airport_shuttle),
-                        ),
-                        Text("Univ"),
-                      ],
-                    ),
-                  ),
+                  _buildRaisedButton("University", "Univ", Level.Univ, "Univ"),
+//                  RaisedButton(
+//                    padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+//                    onPressed: () {
+//                      Navigator.push(context, MaterialPageRoute(builder: (context) => LevelRoute(title: "University", tag: "Univ", level: Level.Univ,)));
+//                    },
+//                    child: Column(
+//                      children: <Widget>[
+//                        Hero(
+//                          tag: "Univ",
+//                          child: Icon(Icons.airport_shuttle),
+//                        ),
+//                        Text("Univ"),
+//                      ],
+//                    ),
+//                  ),
                 ],
               ),
             ],
@@ -246,7 +282,7 @@ class _BrowsePageState extends State<BrowsePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
-          popupMenuButton(),
+          buildPopupMenuButton(),
         ],
       ),
       body: _buildBody(context),
@@ -256,18 +292,15 @@ class _BrowsePageState extends State<BrowsePage> {
 
 class Record {
   final String title;
-//  final bool active;
   final Level level;
   final List<String> tags;
   final DocumentReference reference;
 
   Record.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['title'] != null),
-//        assert(map['active'] != null),
         assert(map['level'] != null),
         assert(map['tags'] != null),
         title = map['title'],
-//        active = map['active'],
         level = getLevel(map['level']),
         tags = getTags(map['tags']);
 
