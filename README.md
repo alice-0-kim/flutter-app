@@ -35,6 +35,16 @@ git clone https://github.com/alice-0-kim/flutter-app.git
   ![](20190528093110.png)
   5. Run `main.dart` or press `Shift` + `F10`
 
+## Authentication
+- Google
+- Troubleshooting
+  - People API has not been used in project XXXXXXXXXXXX before or it is disabled
+    - Follow the instruction to enable the API
+  - PlatformException(sign_in_failed, com.google.android.gms.common.api.ApiException: 10: , null)
+    - [Related StackOverFlow discussion](https://stackoverflow.com/questions/54557479/flutter-and-google-sign-in-plugin-platformexceptionsign-in-failed-com-google)
+  - PlatformException(sign_in_failed, com.google.android.gms.common.api.ApiException: 12500: , null)
+    - [Related GitHub Issues page](https://github.com/flutter/flutter/issues/25909#issuecomment-497378619)
+
 ## Helpful Tutorials
 - [How to build an app from scratch](https://medium.com/aviabird/flutter-tutorial-how-to-build-an-app-from-scratch-b88d4e0e10d7)
 - [Just enough Dart for Flutter](https://medium.com/thetechnocafe/just-enough-dart-for-flutter-e907b80f4ff4)
