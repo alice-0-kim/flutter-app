@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'browse.dart';
 import 'levels.dart';
-import 'pop_up_menu.dart';
+import 'utility.dart';
 import 'dart:async';
 import 'dart:convert' show json;
 
 import "package:http/http.dart" as http;
 import 'package:google_sign_in/google_sign_in.dart';
+
+import 'user.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,47 +18,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Home',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.white,
+        backgroundColor: Colors.white,
+        scaffoldBackgroundColor: Colors.white,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Menu'),
     );
   }
 }
 
-
-
-//class _MyHomePageState extends State<MyHomePage> {
-//  @override
-//  Widget build(BuildContext context) {
-//    return Scaffold(
-//      appBar: AppBar(
-//        title: Text(widget.title),
-//        actions: <Widget>[
-//          buildPopupMenuButton(),
-//        ],
-//      ),
-//      body: MyHomePage(),
-//    );
-//  }
-//}
-
-GoogleSignIn _googleSignIn = GoogleSignIn(
+GoogleSignIn googleSignIn = GoogleSignIn(
   scopes: [
     'email',
     'https://www.googleapis.com/auth/contacts.readonly',
   ],
 );
 
-//class MyHomePage extends StatefulWidget {
-//  MyHomePage({Key key, this.title}) : super(key: key);
-//
-//  final String title;
-//
-//  @override
-//  _MyHomePageState createState() => _MyHomePageState();
-//}
+GoogleSignInAccount currentUser;
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -66,83 +48,109 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  GoogleSignInAccount _currentUser;
-  String _contactText;
+//  GoogleSignInAccount _currentUser;
+//  String _contactText;
+
+  void _handleUpdate() {
+    Firestore.instance.runTransaction((transaction) async {
+      DocumentReference ref;
+//      try {
+//        ref = Firestore.instance.collection("user").document("${_currentUser.id}");
+//        await transaction.get(ref);
+//      } catch (error) {
+//        if (error is PlatformException && error.code == 'DOCUMENT_NOT_FOUND') {
+//          await transaction.set(ref, {
+//            "name": _currentUser.displayName,
+//            "email": _currentUser.email,
+//          });
+//        } else rethrow;
+//      }
+      print("Hello".toUpperCase());
+
+
+//      await transaction.set(Firestore.instance.collection("user").document(), {
+//        "name": _currentUser.displayName,
+//        "email": _currentUser.email,
+//      });
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+    googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
       setState(() {
-        _currentUser = account;
+        currentUser = account;
       });
-      if (_currentUser != null) {
-        _handleGetContact();
-      }
+//      if (_currentUser != null) {
+//        _handleUpdate();
+//      }
     });
-    _googleSignIn.signInSilently();
+    googleSignIn.signInSilently();
   }
 
-  Future<void> _handleGetContact() async {
-    setState(() {
-      _contactText = "Loading contact info...";
-    });
-    final http.Response response = await http.get(
-      'https://people.googleapis.com/v1/people/me/connections'
-          '?requestMask.includeField=person.names',
-      headers: await _currentUser.authHeaders,
-    );
-    if (response.statusCode != 200) {
-      setState(() {
-        _contactText = "People API gave a ${response.statusCode} "
-            "response. Check logs for details.";
-      });
-      print('People API ${response.statusCode} response: ${response.body}');
-      return;
-    }
-    final Map<String, dynamic> data = json.decode(response.body);
-    final String namedContact = _pickFirstNamedContact(data);
-    setState(() {
-      if (namedContact != null) {
-        _contactText = "I see you know $namedContact!";
-      } else {
-        _contactText = "No contacts to display.";
-      }
-    });
-  }
 
-  String _pickFirstNamedContact(Map<String, dynamic> data) {
-    final List<dynamic> connections = data['connections'];
-    final Map<String, dynamic> contact = connections?.firstWhere(
-          (dynamic contact) => contact['names'] != null,
-      orElse: () => null,
-    );
-    if (contact != null) {
-      final Map<String, dynamic> name = contact['names'].firstWhere(
-            (dynamic name) => name['displayName'] != null,
-        orElse: () => null,
-      );
-      if (name != null) {
-        return name['displayName'];
-      }
-    }
-    return null;
-  }
+
+//  Future<void> _handleGetContact() async {
+//    setState(() {
+//      _contactText = "Loading contact info...";
+//    });
+//    final http.Response response = await http.get(
+//      'https://people.googleapis.com/v1/people/me/connections'
+//          '?requestMask.includeField=person.names',
+//      headers: await _currentUser.authHeaders,
+//    );
+//    if (response.statusCode != 200) {
+//      setState(() {
+//        _contactText = "People API gave a ${response.statusCode} "
+//            "response. Check logs for details.";
+//      });
+//      print('People API ${response.statusCode} response: ${response.body}');
+//      return;
+//    }
+//    final Map<String, dynamic> data = json.decode(response.body);
+//    final String namedContact = _pickFirstNamedContact(data);
+//    setState(() {
+//      if (namedContact != null) {
+//        _contactText = "I see you know $namedContact!";
+//      } else {
+//        _contactText = "No contacts to display.";
+//      }
+//    });
+//  }
+
+//  String _pickFirstNamedContact(Map<String, dynamic> data) {
+//    final List<dynamic> connections = data['connections'];
+//    final Map<String, dynamic> contact = connections?.firstWhere(
+//          (dynamic contact) => contact['names'] != null,
+//      orElse: () => null,
+//    );
+//    if (contact != null) {
+//      final Map<String, dynamic> name = contact['names'].firstWhere(
+//            (dynamic name) => name['displayName'] != null,
+//        orElse: () => null,
+//      );
+//      if (name != null) {
+//        return name['displayName'];
+//      }
+//    }
+//    return null;
+//  }
 
   Future<void> _handleSignIn() async {
     try {
-      await _googleSignIn.signIn();
+      await googleSignIn.signIn();
     } catch (error) {
       print(error);
     }
   }
 
   Future<void> _handleSignOut() async {
-    _googleSignIn.disconnect();
+    googleSignIn.disconnect();
   }
 
   Widget _buildBody() {
-    if (_currentUser != null) {
+    if (currentUser != null) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -154,26 +162,22 @@ class MyHomePageState extends State<MyHomePage> {
 //            subtitle: Text(_currentUser.email ?? ''),
 //          ),
           // TODO: make it a snackbar, or popup
-          const Text("Signed in successfully."),
+          Text("Welcome back, ${currentUser.displayName}!"),
 //          Text(_contactText ?? ''),
           RaisedButton(
             child: const Text('SIGN OUT'),
             onPressed: _handleSignOut,
           ),
           RaisedButton(
-            child: const Text('REFRESH'),
-            onPressed: _handleGetContact,
-          ),
-          RaisedButton(
-            child: Text('Browse'),
+            child: Text('Browse'.toUpperCase(), style: TextStyle(letterSpacing: 1.0),),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => BrowsePage(title: "Browse")));
             },
           ),
           RaisedButton(
-            child: Text('Levels'),
+            child: Text('Levels'.toUpperCase(), style: TextStyle(letterSpacing: 1.0),),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => LevelsPage(title: "Levels")));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ByLevels(title: "By Levels")));
             },
           ),
         ],
@@ -195,12 +199,13 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          buildPopupMenuButton(),
-        ],
-      ),
+      appBar: buildAppBar(widget.title),
+//      AppBar(
+//        title: Text(widget.title),
+//        actions: <Widget>[
+//          buildPopupMenuButton(),
+//        ],
+//      ),
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
         child: _buildBody(),

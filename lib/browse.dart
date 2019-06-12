@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'routes.dart';
+import 'problem.dart';
 import 'content.dart';
-import 'pop_up_menu.dart';
+import 'utility.dart';
 import 'constants.dart';
 
 class BrowsePage extends StatefulWidget {
@@ -72,7 +72,7 @@ class _BrowsePageState extends State<BrowsePage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProblemRoute(Content(record.title, record.level, record.tags)),
+            builder: (context) => Problem(Content(record.title, record.level, record.tags)),
           ),
         );
       },
@@ -104,9 +104,7 @@ class _BrowsePageState extends State<BrowsePage> {
   @override
   initState() {
     super.initState();
-
     _initTags();
-
     controller.addListener(() {
       setState(() {
         filter = controller.text;
@@ -123,12 +121,7 @@ class _BrowsePageState extends State<BrowsePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          buildPopupMenuButton(),
-        ],
-      ),
+      appBar: buildAppBar(widget.title),
       body: _buildBody(context),
     );
   }

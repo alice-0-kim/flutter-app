@@ -1,13 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'content.dart';
+import 'main.dart';
+import 'utility.dart';
 
 class CommentPage extends StatefulWidget {
-  CommentPage({Key key, this.title, this.item}) : super(key: key);
+  CommentPage({Key key, this.title, this.content}) : super(key: key);
 
   final String title;
-  final Content item;
+  final Content content;
 
   @override
   _CommentPageState createState() {
@@ -16,10 +19,12 @@ class CommentPage extends StatefulWidget {
 }
 
 class _CommentPageState extends State<CommentPage> {
-  void _addComment(String user, String text) {
+  void _addComment(GoogleSignInAccount user, String text, Content content) {
     Firestore.instance.runTransaction((transaction) async {
       await transaction.set(Firestore.instance.collection("comment").document(), {
-        "user": "user",
+        "userId": user.id,
+        "user": user.displayName,
+        "content": content.title,
         "text": text,
         "timestamp": new Timestamp.now(),
       });
@@ -29,7 +34,7 @@ class _CommentPageState extends State<CommentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Comments')),
+      appBar: buildAppBar(widget.title),
       body: _buildBody(context),
     );
   }
@@ -54,11 +59,9 @@ class _CommentPageState extends State<CommentPage> {
             width: MediaQuery.of(context).size.width,
             color: Colors.white,
             child: TextField(
-//              autofocus: true,
               onSubmitted: (String submitted) {
                 setState(() {
-                  // TODO: replace dummy values to real user-provided value
-                  _addComment("User", submitted);
+                  _addComment(currentUser, submitted, widget.content);
                 });
               },
               decoration: InputDecoration(
@@ -80,10 +83,10 @@ class _CommentPageState extends State<CommentPage> {
   }
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-    final record = Record.fromSnapshot(data);
+    final comment = Comment.fromSnapshot(data);
 
-    return Padding(
-      key: ValueKey(record.user),
+    return comment.content.toLowerCase() == widget.content.title.toLowerCase() ? Padding(
+      key: ValueKey(comment.user),
       padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.5),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -106,37 +109,40 @@ class _CommentPageState extends State<CommentPage> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(right: 10.0),
-                  child: Text(record.user, style: TextStyle(fontWeight: FontWeight.bold),),
+                  child: Text(comment.user, style: TextStyle(fontWeight: FontWeight.bold),),
                 ),
-                Text(new DateFormat('yyyy-MM-dd HH:mm:ss').format(record.timestamp.toDate())),
+                Text(new DateFormat('yyyy-MM-dd HH:mm:ss').format(comment.timestamp.toDate())),
               ],
             ),
-            Text(record.text, textAlign: TextAlign.left,),
+            Text(comment.text, textAlign: TextAlign.left,),
           ],
         ),
       ),
-    );
+    ) : Container();
   }
 }
 
-class Record {
-  final String user;
-  final String text;
+class Comment {
+//  final int userId;
+  final String user, content, text;
   final Timestamp timestamp;
-//  final int votes;
   final DocumentReference reference;
 
-  Record.fromMap(Map<String, dynamic> map, {this.reference})
+  Comment.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['user'] != null),
+//        assert(map['userId'] != null),
+        assert(map['content'] != null),
         assert(map['text'] != null),
         assert(map['timestamp'] != null),
         user = map['user'],
+//        userId = map['userId'],
+        content = map['content'],
         text = map['text'],
         timestamp = map['timestamp'];
 
-  Record.fromSnapshot(DocumentSnapshot snapshot)
+  Comment.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 
   @override
-  String toString() => "Record<$user>";
+  String toString() => "Comment<$user>";
 }
