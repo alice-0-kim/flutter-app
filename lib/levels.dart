@@ -136,10 +136,11 @@ class _ByLevelsState extends State<ByLevels> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(widget.title),
-      body: Container(
-        child: Center(
-          child: ListView(
-            padding: EdgeInsets.symmetric(vertical: 30.0),
+      body: ConstrainedBox(
+        constraints: const BoxConstraints.expand(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+//            padding: EdgeInsets.symmetric(vertical: 30.0),
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -163,7 +164,6 @@ class _ByLevelsState extends State<ByLevels> {
             ],
           ),
         ),
-      ),
     );
   }
 }
