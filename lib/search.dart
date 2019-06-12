@@ -6,16 +6,16 @@ import 'content.dart';
 import 'utility.dart';
 import 'constants.dart';
 
-class BrowsePage extends StatefulWidget {
-  BrowsePage({Key key, this.title}) : super(key: key);
+class Search extends StatefulWidget {
+  Search({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _BrowsePageState createState() => _BrowsePageState();
+  _SearchState createState() => _SearchState();
 }
 
-class _BrowsePageState extends State<BrowsePage> {
+class _SearchState extends State<Search> {
   TextEditingController controller = TextEditingController();
   String filter;
   List<Tag> tags = [];

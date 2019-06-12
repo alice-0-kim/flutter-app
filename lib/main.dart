@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
-import 'browse.dart';
+import 'search.dart';
 import 'levels.dart';
 import 'utility.dart';
 import 'dart:async';
 import 'dart:convert' show json;
-
 import "package:http/http.dart" as http;
 import 'package:google_sign_in/google_sign_in.dart';
-
-import 'user.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,7 +20,46 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: MyHomePage(title: 'Menu'),
+//      home: MyHomePage(title: 'Menu'),
+      home: AnonHomePage(),
+    );
+  }
+}
+
+class AnonHomePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => AnonHomePageState();
+}
+
+class AnonHomePageState extends State<AnonHomePage> {
+  Widget _buildBody() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        RaisedButton(
+          child: Text('Browse'.toUpperCase(), style: TextStyle(letterSpacing: 1.0),),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Search(title: "Browse")));
+          },
+        ),
+        RaisedButton(
+          child: Text('Levels'.toUpperCase(), style: TextStyle(letterSpacing: 1.0),),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ByLevels(title: "By Levels")));
+          },
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: buildAppBar("Main menu"),
+      body: ConstrainedBox(
+        constraints: const BoxConstraints.expand(),
+        child: _buildBody(),
+      ),
     );
   }
 }
@@ -48,33 +83,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-//  GoogleSignInAccount _currentUser;
-//  String _contactText;
-
-  void _handleUpdate() {
-    Firestore.instance.runTransaction((transaction) async {
-      DocumentReference ref;
-//      try {
-//        ref = Firestore.instance.collection("user").document("${_currentUser.id}");
-//        await transaction.get(ref);
-//      } catch (error) {
-//        if (error is PlatformException && error.code == 'DOCUMENT_NOT_FOUND') {
-//          await transaction.set(ref, {
-//            "name": _currentUser.displayName,
-//            "email": _currentUser.email,
-//          });
-//        } else rethrow;
-//      }
-      print("Hello".toUpperCase());
-
-
-//      await transaction.set(Firestore.instance.collection("user").document(), {
-//        "name": _currentUser.displayName,
-//        "email": _currentUser.email,
-//      });
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -82,60 +90,9 @@ class MyHomePageState extends State<MyHomePage> {
       setState(() {
         currentUser = account;
       });
-//      if (_currentUser != null) {
-//        _handleUpdate();
-//      }
     });
     googleSignIn.signInSilently();
   }
-
-
-
-//  Future<void> _handleGetContact() async {
-//    setState(() {
-//      _contactText = "Loading contact info...";
-//    });
-//    final http.Response response = await http.get(
-//      'https://people.googleapis.com/v1/people/me/connections'
-//          '?requestMask.includeField=person.names',
-//      headers: await _currentUser.authHeaders,
-//    );
-//    if (response.statusCode != 200) {
-//      setState(() {
-//        _contactText = "People API gave a ${response.statusCode} "
-//            "response. Check logs for details.";
-//      });
-//      print('People API ${response.statusCode} response: ${response.body}');
-//      return;
-//    }
-//    final Map<String, dynamic> data = json.decode(response.body);
-//    final String namedContact = _pickFirstNamedContact(data);
-//    setState(() {
-//      if (namedContact != null) {
-//        _contactText = "I see you know $namedContact!";
-//      } else {
-//        _contactText = "No contacts to display.";
-//      }
-//    });
-//  }
-
-//  String _pickFirstNamedContact(Map<String, dynamic> data) {
-//    final List<dynamic> connections = data['connections'];
-//    final Map<String, dynamic> contact = connections?.firstWhere(
-//          (dynamic contact) => contact['names'] != null,
-//      orElse: () => null,
-//    );
-//    if (contact != null) {
-//      final Map<String, dynamic> name = contact['names'].firstWhere(
-//            (dynamic name) => name['displayName'] != null,
-//        orElse: () => null,
-//      );
-//      if (name != null) {
-//        return name['displayName'];
-//      }
-//    }
-//    return null;
-//  }
 
   Future<void> _handleSignIn() async {
     try {
@@ -154,16 +111,8 @@ class MyHomePageState extends State<MyHomePage> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-//          ListTile(
-//            leading: GoogleUserCircleAvatar(
-//              identity: _currentUser,
-//            ),
-//            title: Text(_currentUser.displayName ?? ''),
-//            subtitle: Text(_currentUser.email ?? ''),
-//          ),
           // TODO: make it a snackbar, or popup
           Text("Welcome back, ${currentUser.displayName}!"),
-//          Text(_contactText ?? ''),
           RaisedButton(
             child: const Text('SIGN OUT'),
             onPressed: _handleSignOut,
@@ -171,7 +120,7 @@ class MyHomePageState extends State<MyHomePage> {
           RaisedButton(
             child: Text('Browse'.toUpperCase(), style: TextStyle(letterSpacing: 1.0),),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => BrowsePage(title: "Browse")));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Search(title: "Browse")));
             },
           ),
           RaisedButton(
@@ -200,12 +149,6 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(widget.title),
-//      AppBar(
-//        title: Text(widget.title),
-//        actions: <Widget>[
-//          buildPopupMenuButton(),
-//        ],
-//      ),
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
         child: _buildBody(),
